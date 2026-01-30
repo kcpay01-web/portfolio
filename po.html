@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krunal Chauhan | Visual Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display (Cinematic/Serif) & Inter (Clean/Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Config for Tailwind to add Cinematic Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cinema: {
+                            black: '#050505',
+                            dark: '#0a0a0a',
+                            card: '#121212',
+                            gold: '#D4AF37',
+                            gray: '#888888'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'zoom-slow': 'zoomSlow 20s linear infinite alternate',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        zoomSlow: {
+                            '0%': { transform: 'scale(1)' },
+                            '100%': { transform: 'scale(1.1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Cinematic Styles */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+
+        /* Gallery Hover Effect */
+        .gallery-item {
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: grayscale(20%) brightness(0.9);
+        }
+
+        .gallery-container:hover .gallery-item {
+            opacity: 0.4; /* Dim all items when container is hovered */
+            filter: grayscale(100%);
+        }
+
+        .gallery-container .gallery-item:hover {
+            opacity: 1; /* Highlight the hovered item */
+            transform: scale(1.02);
+            filter: grayscale(0%) brightness(1.1);
+            z-index: 10;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Noise Texture Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            z-index: 50;
+        }
+
+        /* Reveal on Scroll Class */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth Text Selection */
+        ::selection {
+            background: #D4AF37;
+            color: #000;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cinema-gold selection:text-black">
+
+    <!-- Noise Texture for Film Grain Feel -->
+    <div class="noise-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 top-0 left-0 transition-all duration-300 py-6 px-6 md:px-12 flex justify-between items-center mix-blend-difference text-white" id="navbar">
+        <a href="#" class="text-2xl font-serif font-bold tracking-tighter">KC.</a>
+        <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase">
+            <a href="#work" class="hover:text-cinema-gold transition-colors">Work</a>
+            <a href="#about" class="hover:text-cinema-gold transition-colors">About</a>
+            <a href="#contact" class="hover:text-cinema-gold transition-colors">Contact</a>
+        </div>
+        <button class="md:hidden text-white" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+            <i data-lucide="menu"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-cinema-black z-30 hidden flex flex-col items-center justify-center space-y-8 text-2xl font-serif">
+        <button class="absolute top-6 right-6" onclick="document.getElementById('mobile-menu').classList.add('hidden')">
+            <i data-lucide="x"></i>
+        </button>
+        <a href="#work" class="hover:text-cinema-gold" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Work</a>
+        <a href="#about" class="hover:text-cinema-gold" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About</a>
+        <a href="#contact" class="hover:text-cinema-gold" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Slow Zoom -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1542202229-7d93c33f5d07?q=80&w=2940&auto=format&fit=crop" 
+                 alt="Background" 
+                 class="w-full h-full object-cover opacity-30 animate-zoom-slow">
+            <!-- Gradient Overlay for readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-cinema-black via-cinema-black/50 to-transparent"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <p class="text-cinema-gold tracking-[0.3em] uppercase text-xs md:text-sm mb-4 animate-fade-in-up" style="animation-delay: 0.2s;">
+                Portfolio &middot; 2026
+            </p>
+            <h1 class="text-5xl md:text-8xl font-serif font-bold mb-6 leading-tight animate-fade-in-up" style="animation-delay: 0.4s;">
+                Krunal Chauhan
+            </h1>
+            <p class="text-cinema-gray text-lg md:text-xl font-light max-w-2xl mx-auto mb-10 animate-fade-in-up" style="animation-delay: 0.6s;">
+                Visual Designer & Storyteller. Crafting immersive digital experiences through design and motion.
+            </p>
+            <div class="animate-fade-in-up" style="animation-delay: 0.8s;">
+                <a href="#work" class="group inline-flex items-center gap-2 border border-white/20 px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300">
+                    <span>View Selected Works</span>
+                    <i data-lucide="arrow-down" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <i data-lucide="mouse" class="w-6 h-6"></i>
+        </div>
+    </header>
+
+    <!-- Work / Gallery Section -->
+    <section id="work" class="relative py-32 px-6 md:px-12 bg-cinema-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+                <div>
+                    <h2 class="text-4xl md:text-6xl font-serif mb-2">Selected Works</h2>
+                    <div class="h-1 w-20 bg-cinema-gold mt-4"></div>
+                </div>
+                <p class="text-cinema-gray max-w-sm text-right mt-6 md:mt-0">
+                    A collection of branding, visual design, and motion projects from my Behance portfolio.
+                </p>
+            </div>
+
+            <!-- 
+               INSTRUCTIONS FOR KRUNAL:
+               Replace the 'src' attributes below with your actual Behance project image URLs.
+               You can right-click your images on Behance and select "Copy Image Address".
+            -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 gallery-container">
+                
+                <!-- Project 1 -->
+                <a href="https://www.behance.net/krunalchauhan1" target="_blank" class="gallery-item group relative block aspect-[4/5] overflow-hidden rounded-sm reveal">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop" 
+                         alt="Project 1" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <span class="text-cinema-gold text-xs tracking-widest uppercase mb-2 block">Branding</span>
+                        <h3 class="text-2xl font-serif">Brand Identity</h3>
+                    </div>
+                </a>
+
+                <!-- Project 2 (Large Span) -->
+                <a href="https://www.behance.net/krunalchauhan1" target="_blank" class="gallery-item group relative block aspect-[4/5] md:aspect-[16/10] md:col-span-2 overflow-hidden rounded-sm reveal">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" 
+                         alt="Project 2" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <span class="text-cinema-gold text-xs tracking-widest uppercase mb-2 block">Motion Design</span>
+                        <h3 class="text-2xl font-serif">Cinematic Title Sequence</h3>
+                    </div>
+                </a>
+
+                <!-- Project 3 -->
+                <a href="https://www.behance.net/krunalchauhan1" target="_blank" class="gallery-item group relative block aspect-[4/5] overflow-hidden rounded-sm reveal">
+                    <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop" 
+                         alt="Project 3" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <span class="text-cinema-gold text-xs tracking-widest uppercase mb-2 block">Typography</span>
+                        <h3 class="text-2xl font-serif">Editorial Layout</h3>
+                    </div>
+                </a>
+
+                <!-- Project 4 -->
+                <a href="https://www.behance.net/krunalchauhan1" target="_blank" class="gallery-item group relative block aspect-[4/5] overflow-hidden rounded-sm reveal">
+                    <img src="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?q=80&w=1976&auto=format&fit=crop" 
+                         alt="Project 4" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <span class="text-cinema-gold text-xs tracking-widest uppercase mb-2 block">UI/UX</span>
+                        <h3 class="text-2xl font-serif">Dark Mode Interface</h3>
+                    </div>
+                </a>
+
+                <!-- Project 5 -->
+                <a href="https://www.behance.net/krunalchauhan1" target="_blank" class="gallery-item group relative block aspect-[4/5] overflow-hidden rounded-sm reveal">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" 
+                         alt="Project 5" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <span class="text-cinema-gold text-xs tracking-widest uppercase mb-2 block">Art Direction</span>
+                        <h3 class="text-2xl font-serif">Product Photography</h3>
+                    </div>
+                </a>
+
+                 <!-- Project 6 -->
+                 <a href="https://www.behance.net/krunalchauhan1" target="_blank" class="gallery-item group relative block aspect-[4/5] overflow-hidden rounded-sm reveal">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e0b7a8?q=80&w=1974&auto=format&fit=crop" 
+                         alt="Project 6" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <span class="text-cinema-gold text-xs tracking-widest uppercase mb-2 block">Packaging</span>
+                        <h3 class="text-2xl font-serif">Luxury Packaging</h3>
+                    </div>
+                </a>
+
+            </div>
+            
+            <div class="text-center mt-20 reveal">
+                <a href="https://www.behance.net/krunalchauhan1" target="_blank" class="inline-block border-b border-cinema-gold text-cinema-gold pb-1 hover:text-white hover:border-white transition-colors">
+                    View Entire Collection on Behance
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 md:px-12 bg-cinema-dark relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-cinema-card/50 to-transparent pointer-events-none"></div>
+        
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="reveal">
+                <!-- Abstract Profile Image Placeholder -->
+                <div class="aspect-square bg-gray-800 relative overflow-hidden rounded-sm grayscale hover:grayscale-0 transition-all duration-700">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" 
+                         alt="Krunal Chauhan" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <div class="reveal">
+                <span class="text-cinema-gold tracking-widest uppercase text-sm mb-4 block">About Me</span>
+                <h2 class="text-4xl md:text-5xl font-serif mb-8 leading-tight">Designing with Passion, Editing with Precision.</h2>
+                <div class="space-y-6 text-cinema-gray text-lg font-light">
+                    <p>
+                        I am Krunal Chauhan, a creative professional based in India, specializing in Graphic Design and Video Editing. My work is driven by the belief that design is not just about how things look, but how they feel.
+                    </p>
+                    <p>
+                        With a keen eye for detail and a passion for cinematic storytelling, I help brands and individuals turn their visions into compelling visual narratives. Whether it's a complex brand identity or a high-energy video edit, I bring a unique perspective to every project.
+                    </p>
+                </div>
+                
+                <div class="mt-10 grid grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-white font-serif text-xl mb-2">Design</h4>
+                        <ul class="text-cinema-gray text-sm space-y-1">
+                            <li>Brand Identity</li>
+                            <li>UI/UX Design</li>
+                            <li>Social Media Graphics</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-serif text-xl mb-2">Video</h4>
+                        <ul class="text-cinema-gray text-sm space-y-1">
+                            <li>Video Editing</li>
+                            <li>Motion Graphics</li>
+                            <li>Color Grading</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 px-6 md:px-12 bg-black text-center relative">
+        <div class="max-w-3xl mx-auto reveal">
+            <h2 class="text-4xl md:text-7xl font-serif mb-6">Let's Create Together</h2>
+            <p class="text-cinema-gray text-xl mb-12">Have a project in mind? I'm always open to discussing new opportunities.</p>
+            
+            <a href="mailto:contact@example.com" class="inline-block bg-cinema-gold text-black px-10 py-4 rounded-full font-bold hover:bg-white transition-colors duration-300">
+                Get in Touch
+            </a>
+
+            <div class="mt-20 flex justify-center space-x-8">
+                <a href="https://www.behance.net/krunalchauhan1" class="text-gray-500 hover:text-white transition-colors">
+                    <span class="sr-only">Behance</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10 10-4.477 10-10zm-3.78 0c0 4.354-2.88 6.78-6.18 6.78-3.06 0-5.22-2.34-5.22-6.12 0-3.66 2.16-6.18 5.22-6.18 3.12 0 5.04 1.98 5.04 5.52h-7.68c.12 2.34 1.62 3.6 3.42 3.6 1.44 0 2.46-.72 2.82-1.92h2.52c-.48 2.58-2.7 4.2-5.34 4.2-3.6 0-6.18-2.64-6.18-6.3 0-3.9 2.58-6.54 6.18-6.54 3.78 0 6.48 2.52 6.48 6.36 0 .18 0 .42-.06.6H18.22zM12.96 8.52c-1.68 0-2.82 1.08-3 2.88h5.88c-.12-1.92-1.32-2.88-2.88-2.88z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors">
+                    <i data-lucide="linkedin"></i>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors">
+                    <i data-lucide="instagram"></i>
+                </a>
+            </div>
+            
+            <footer class="mt-20 text-xs text-gray-700 uppercase tracking-widest">
+                &copy; 2026 Krunal Chauhan. All Rights Reserved.
+            </footer>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Reveal on Scroll Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 150;
+
+                reveals.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            // Trigger once on load
+            revealOnScroll();
+        });
+
+        // Navbar Blur Effect on Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-cinema-black/80', 'backdrop-blur-md', 'py-4');
+                nav.classList.remove('py-6');
+            } else {
+                nav.classList.remove('bg-cinema-black/80', 'backdrop-blur-md', 'py-4');
+                nav.classList.add('py-6');
+            }
+        });
+    </script>
+</body>
+</html>
+
+  
